@@ -1,9 +1,12 @@
 import React from 'react'
+import {useState} from 'react'
+import {Eye,EyeOff} from 'lucide-react'
 import {Formik, useFormik} from 'formik'
 import * as Yup from 'yup'
 import AuthLayOuts from '../../components/layouts/AuthLayOuts'
 
 const Login = () => {
+  const [showPassword,setShowPassword] = useState(false)
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/
   const formik = useFormik({
     initialValues:{
@@ -39,28 +42,37 @@ const Login = () => {
           Email Address
         </label>
         <input 
-        className='bg-lime-100 border text-xs px-4 border-slate-200 rounded-lg p-2 mt-4 outline-none'
-        type="text"
+        className='bg-lime-100 border focus:bg-lime-100  text-xs px-4 border-slate-200 rounded-lg p-2 mt-4 outline-none'
+        
+        type="email"
         placeholder='john@example.com'
         name='email'
         id='email'
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.email} />
+
         {formik.touched.email && formik.errors.email ? <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>:null}
 
         <label htmlFor="email" className='text-xs mt-4 font-semibold'>
           Password
         </label>
-        <input 
-        className='bg-lime-100 border text-xs px-4 border-slate-200 rounded-lg p-2 mt-4 outline-none'
-        type="password"
+        <div className='relative'>
+          <input 
+        className='bg-lime-100 border text-xs px-4 pr-10 border-slate-200 rounded-lg p-2 mt-4 outline-none w-full'
+        type={showPassword?'text': 'password'}
         placeholder='Min 8 characters'
         name='password'
         id='password'
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.password} />
+
+          <button type="button" className="absolute right-3 top-1/2 pt-4 transform -translate-y-1/2 text-gray-500 hover:text-gray-700" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword? <Eye size={16}/> :<EyeOff size={16}/>}
+          </button>
+        </div>
+        
         {formik.touched.password && formik.errors.password ? <div className="text-red-500 text-xs mt-1">{formik.errors.password}</div>:null}
 
         <p className='text-xs mt-2'>
